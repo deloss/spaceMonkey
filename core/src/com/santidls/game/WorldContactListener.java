@@ -35,8 +35,8 @@ public class WorldContactListener implements ContactListener {
                 break;
 
             case Vakeros.ROCK_BIT:
-                ((Pinchos)fixA.getUserData()).destroy();
-                ((Pinchos)fixB.getUserData()).destroy();
+                ((Pincho)fixA.getUserData()).destroy();
+                ((Pincho)fixB.getUserData()).destroy();
                 break;
         }
     }

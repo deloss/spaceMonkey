@@ -42,4 +42,8 @@ public class Hud {
     public void upScore() {
         scoreLabel.setText(String.format("%02d", ++score));
     }
+
+    public int getScore() {
+        return score;
+    }
 }

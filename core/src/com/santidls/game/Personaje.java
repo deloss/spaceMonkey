@@ -2,6 +2,7 @@ package com.santidls.game;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -37,7 +38,8 @@ public class Personaje extends Sprite {
         this.posicion=posicion;
         this.texture=texture;
         //setPosition(posicion.x*Vakeros.PIXELES_POR_METRO,posicion.y*Vakeros.PIXELES_POR_METRO);
-        setSize(getWidth()/(Vakeros.PIXELES_POR_METRO*2),getHeight()/(Vakeros.PIXELES_POR_METRO*2));
+        setSize(1,1);
+        //setSize(getWidth()/(Vakeros.PIXELES_POR_METRO*2),getHeight()/(Vakeros.PIXELES_POR_METRO*2));
         crearPj();
         //System.out.println(getWidth());
     }
@@ -69,10 +71,44 @@ public class Personaje extends Sprite {
             //body.applyLinearImpulse(new Vector2(5, 10), body.getWorldCenter(), true);
         }
 
-        setPosition((body.getPosition().x-getWidth()/2),(body.getPosition().y-getHeight()/2));
+        boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+        if(gyroscopeAvail){
+            float gyroX = Gdx.input.getGyroscopeX();
+            float gyroY = Gdx.input.getGyroscopeY();
+            float velX = normalizeSpeed(gyroX);
+            float velY = normalizeSpeed(gyroY);
+
+            System.out.println("Velocity x = " + velX);
+            System.out.println("Velocity y = " + velY);
+
+            body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
+            //body.setAngularVelocity(gyroX);
+            setPosition((body.getPosition().x-getWidth()/2),(body.getPosition().y-getHeight()/2));
+            //setOrigin(body.getPosition().x, body.getPosition().y);
+            //setRotation((float)(body.getAngle() * 180 / Math.PI));
+        } else {
+            System.out.println("No hay giroscopio");
+            setPosition((body.getPosition().x - getWidth() / 2), (body.getPosition().y - getHeight() / 2));
+        }
 
 
 
+
+
+
+
+
+    }
+
+    final float VELOCITY = 0.2f;
+
+    private float normalizeSpeed(float velocity) {
+        if (velocity > VELOCITY)
+            return VELOCITY;
+        else if(velocity < -VELOCITY)
+            return -VELOCITY;
+        else
+            return velocity;
     }
 
 }

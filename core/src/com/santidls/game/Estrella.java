@@ -36,7 +36,7 @@ public class Estrella extends Sprite {
         this.texture=texture;
         posicion=position;
         setPosition(posicion.x,posicion.y);
-        setSize(getWidth()/Vakeros.PIXELES_POR_METRO,getHeight()/Vakeros.PIXELES_POR_METRO);
+        setSize(1,1);
         crearEstrella();
     }
 
