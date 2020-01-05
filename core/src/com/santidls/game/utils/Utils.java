@@ -1,4 +1,4 @@
-package com.santidls.game;
+package com.santidls.game.utils;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,8 +16,8 @@ public class Utils {
         float xPosition;
         float yPosition;
         do {
-            xPosition = rand.nextInt(Vakeros.GAME_WIDTH / Vakeros.PIXELES_POR_METRO);
-            yPosition = rand.nextInt(Vakeros.GAME_HEIGHT / Vakeros.PIXELES_POR_METRO);
+            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO);
+            yPosition = rand.nextInt(Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
         }while(euclidianDistance(xPosition, yPosition, pjPositionX, pjPositionY) < 5);
         return new Vector2(xPosition, yPosition);
     }
@@ -35,22 +35,22 @@ public class Utils {
         if (side == LEFT_SIDE) {
             angle = (float) Math.PI;
             xPosition = 0;
-            yPosition = rand.nextInt(Vakeros.GAME_HEIGHT / Vakeros.PIXELES_POR_METRO);
+            yPosition = rand.nextInt(Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
         }
         else if (side == RIGHT_SIDE) {
             angle = (float) 0;
-            xPosition = Vakeros.GAME_WIDTH / Vakeros.PIXELES_POR_METRO;
-            yPosition = rand.nextInt(Vakeros.GAME_HEIGHT / Vakeros.PIXELES_POR_METRO);
+            xPosition = Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO;
+            yPosition = rand.nextInt(Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
         }
         else if (side == TOP_SIDE) {
             angle = (float) -Math.PI/2;
-            xPosition = rand.nextInt(Vakeros.GAME_WIDTH / Vakeros.PIXELES_POR_METRO);
+            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO);
             yPosition = 0;
         }
         else {
             angle = (float) Math.PI/2;
-            xPosition = rand.nextInt(Vakeros.GAME_WIDTH / Vakeros.PIXELES_POR_METRO);
-            yPosition = Vakeros.GAME_HEIGHT / Vakeros.PIXELES_POR_METRO;
+            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO);
+            yPosition = Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO;
         }
         return new Vector3(xPosition, yPosition, angle);
     }

@@ -1,4 +1,4 @@
-package com.santidls.game;
+package com.santidls.game.utils;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;

@@ -1,4 +1,4 @@
-package com.santidls.game;
+package com.santidls.game.Screens;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import javax.swing.GroupLayout;
+import com.santidls.game.utils.Consts;
 
 public class Hud {
 
@@ -23,7 +21,7 @@ public class Hud {
 
     public Hud(SpriteBatch sb) {
         score = 0;
-        viewport = new FitViewport(Vakeros.GAME_WIDTH/4, Vakeros.GAME_HEIGHT/4, new OrthographicCamera());
+        viewport = new FitViewport(Consts.GAME_WIDTH/4, Consts.GAME_HEIGHT/4, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
         Table table = new Table();

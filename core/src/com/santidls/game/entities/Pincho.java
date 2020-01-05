@@ -1,4 +1,4 @@
-package com.santidls.game;
+package com.santidls.game.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,8 +10,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.santidls.game.utils.Consts;
 import com.santidls.game.Screens.GameScreen;
 
 import static java.lang.Math.sin;
@@ -25,8 +25,6 @@ public class Pincho extends Sprite {
     private Fixture fixture;
     private Vector2 posicion;
     private World world;
-    private OrthographicCamera cam;
-    private Texture texture;
     private float angulo;
     private boolean destroyed = false;
     private boolean setToDestroy = false;
@@ -34,8 +32,6 @@ public class Pincho extends Sprite {
     public Pincho(Texture texture, Vector2 position, float angulo, GameScreen game){
         super(texture);
         world=game.getWorld();
-        cam=game.getCam();
-        this.texture=texture;
         posicion=position;
         setPosition(posicion.x,posicion.y);
         this.angulo=angulo;
@@ -58,7 +54,7 @@ public class Pincho extends Sprite {
         fixture=body.createFixture(fdef);
         fixture.setUserData(this);
         Filter filter = new Filter();
-        filter.categoryBits = Vakeros.ROCK_BIT;
+        filter.categoryBits = Consts.ROCK_BIT;
         fixture.setFilterData(filter);
         body.setTransform(body.getPosition(),angulo);
         body.setLinearVelocity((float)(-velocity*Math.cos((double)angulo)),(float)(-velocity*sin((double)angulo)));

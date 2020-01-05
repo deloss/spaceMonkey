@@ -1,14 +1,12 @@
-package com.santidls.game;
+package com.santidls.game.entities;
 
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -16,9 +14,11 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.santidls.game.utils.Consts;
 import com.santidls.game.Screens.GameScreen;
 
-import java.io.IOException;
+import static com.santidls.game.utils.Consts.MAX_VELOCITY;
+import static com.santidls.game.utils.Consts.PIXELES_POR_METRO;
 
 /**
  * Created by Santiago on 15/01/2018.
@@ -26,27 +26,23 @@ import java.io.IOException;
 
 public class Personaje extends Sprite {
     private Vector2 posicion;
-    public Body body;
+    private Body body;
     private World world;
-    private OrthographicCamera cam;
-    private Texture texture;
+    private int contador = 0;
 
     public Personaje(Texture texture, Vector2 posicion, GameScreen game){
         super(texture);
         world=game.getWorld();
-        cam=game.getCam();
         this.posicion=posicion;
-        this.texture=texture;
-        //setPosition(posicion.x*Vakeros.PIXELES_POR_METRO,posicion.y*Vakeros.PIXELES_POR_METRO);
         setSize(1,1);
-        //setSize(getWidth()/(Vakeros.PIXELES_POR_METRO*2),getHeight()/(Vakeros.PIXELES_POR_METRO*2));
+        setPosition(posicion.x + getWidth()/2, posicion.y + getHeight()/2);
+        setOrigin(posicion.x, posicion.y);
+        setCenter(posicion.x, posicion.y);
         crearPj();
-        //System.out.println(getWidth());
     }
     Vector2 tmp= new Vector2();
     public void crearPj(){
         BodyDef bdef=new BodyDef();
-        //bdef.position.set((getX()+getWidth()/2)/Vakeros.PIXELES_POR_METRO,(getY()+getHeight()/2)/Vakeros.PIXELES_POR_METRO);
         bdef.position.set(posicion.x,posicion.y);
         bdef.type= BodyDef.BodyType.DynamicBody;
         body=world.createBody(bdef);
@@ -56,20 +52,16 @@ public class Personaje extends Sprite {
         fixDef.shape=shape;
         fixDef.density=0;
         Filter filter = new Filter();
-        filter.categoryBits = Vakeros.PJ_BIT;
+        filter.categoryBits = Consts.PJ_BIT;
         Fixture fixture = body.createFixture(fixDef);
         fixture.setUserData(this);
         fixture.setFilterData(filter);
         tmp.set(body.getPosition());
-        //System.out.println(tmp.x + " " + tmp.y + " " + getX() + " " + getY());
     }
     public Body getBody(){
         return body;
     }
     public void update(float dt){
-        if(Gdx.input.isTouched()) {
-            //body.applyLinearImpulse(new Vector2(5, 10), body.getWorldCenter(), true);
-        }
 
         boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
         if(gyroscopeAvail){
@@ -78,17 +70,28 @@ public class Personaje extends Sprite {
             float velX = normalizeSpeed(gyroX);
             float velY = normalizeSpeed(gyroY);
 
-            System.out.println("Velocity x = " + velX);
+            /*System.out.println("Velocity x = " + velX);
             System.out.println("Velocity y = " + velY);
+            System.out.println(String.format("Position/WorldCenter : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, body.getWorldCenter().x, body.getWorldCenter().y));
+            System.out.println(String.format("bodyPosition/spritePosition : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, getX(), getY()));*/
 
+            setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+            setOrigin((body.getPosition().x / PIXELES_POR_METRO) + getWidth()/2, (body.getPosition().y / PIXELES_POR_METRO) + getHeight() / 2);
+            body.setTransform(body.getPosition(), velX * 2 / getWidth());
             body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
-            //body.setAngularVelocity(gyroX);
-            setPosition((body.getPosition().x-getWidth()/2),(body.getPosition().y-getHeight()/2));
-            //setOrigin(body.getPosition().x, body.getPosition().y);
-            //setRotation((float)(body.getAngle() * 180 / Math.PI));
+            setRotation((float)((velX * 2 / getWidth()) * 180 / Math.PI));
+
+
         } else {
-            System.out.println("No hay giroscopio");
-            setPosition((body.getPosition().x - getWidth() / 2), (body.getPosition().y - getHeight() / 2));
+            contador++;
+            if(contador > 10) {
+                System.out.println(dt);
+                contador = 0;
+                setOrigin((body.getPosition().x / PIXELES_POR_METRO) + getWidth()/2, (body.getPosition().y / PIXELES_POR_METRO) + getHeight() / 2);
+                rotate(10);
+            }
+            //System.out.println("No hay giroscopio");
+            //setPosition((body.getPosition().x + getWidth() / 2), (body.getPosition().y + getHeight() / 2));
         }
 
 
@@ -100,13 +103,11 @@ public class Personaje extends Sprite {
 
     }
 
-    final float VELOCITY = 0.2f;
-
     private float normalizeSpeed(float velocity) {
-        if (velocity > VELOCITY)
-            return VELOCITY;
-        else if(velocity < -VELOCITY)
-            return -VELOCITY;
+        if (velocity > MAX_VELOCITY)
+            return MAX_VELOCITY;
+        else if(velocity < - MAX_VELOCITY)
+            return - MAX_VELOCITY;
         else
             return velocity;
     }

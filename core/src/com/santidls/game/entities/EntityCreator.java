@@ -1,4 +1,4 @@
-package com.santidls.game;
+package com.santidls.game.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
