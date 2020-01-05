@@ -9,4 +9,5 @@ public class Consts {
     public static final short STAR_BIT = 4;
     public static final float TIME_CREATION_ROCK = 2f;
     public static final float MAX_VELOCITY = 0.2f;
+    public static final float LINEAR_VELOCITY_ROTATION_RELATION = 6;
 }

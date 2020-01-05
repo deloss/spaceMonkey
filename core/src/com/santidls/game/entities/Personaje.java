@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.santidls.game.utils.Consts;
 import com.santidls.game.Screens.GameScreen;
 
+import static com.santidls.game.utils.Consts.LINEAR_VELOCITY_ROTATION_RELATION;
 import static com.santidls.game.utils.Consts.MAX_VELOCITY;
 import static com.santidls.game.utils.Consts.PIXELES_POR_METRO;
 
@@ -36,11 +37,10 @@ public class Personaje extends Sprite {
         this.posicion=posicion;
         setSize(1,1);
         setPosition(posicion.x + getWidth()/2, posicion.y + getHeight()/2);
-        setOrigin(posicion.x, posicion.y);
-        setCenter(posicion.x, posicion.y);
+        setOrigin((posicion.x / PIXELES_POR_METRO) + getWidth()/2, (posicion.y / PIXELES_POR_METRO) + getHeight() / 2);
         crearPj();
     }
-    Vector2 tmp= new Vector2();
+
     public void crearPj(){
         BodyDef bdef=new BodyDef();
         bdef.position.set(posicion.x,posicion.y);
@@ -56,7 +56,6 @@ public class Personaje extends Sprite {
         Fixture fixture = body.createFixture(fixDef);
         fixture.setUserData(this);
         fixture.setFilterData(filter);
-        tmp.set(body.getPosition());
     }
     public Body getBody(){
         return body;
@@ -76,10 +75,11 @@ public class Personaje extends Sprite {
             System.out.println(String.format("bodyPosition/spritePosition : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, getX(), getY()));*/
 
             setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
-            setOrigin((body.getPosition().x / PIXELES_POR_METRO) + getWidth()/2, (body.getPosition().y / PIXELES_POR_METRO) + getHeight() / 2);
-            body.setTransform(body.getPosition(), velX * 2 / getWidth());
+            //body.setTransform(body.getPosition(), velX * 2 / getWidth());
             body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
-            setRotation((float)((velX * 2 / getWidth()) * 180 / Math.PI));
+            System.out.println(velX * 10 * 2 / getWidth());
+            body.setAngularVelocity(velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth());
+            setRotation((float)(body.getAngle() * 180 / Math.PI));
 
 
         } else {
