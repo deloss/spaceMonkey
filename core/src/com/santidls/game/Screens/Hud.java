@@ -23,13 +23,9 @@ public class Hud {
         score = 0;
         viewport = new FitViewport(Consts.GAME_WIDTH/4, Consts.GAME_HEIGHT/4, new OrthographicCamera());
         stage = new Stage(viewport, sb);
-
         Table table = new Table();
         table.top();
-        //make the table fill the entire stage
         table.setFillParent(true);
-
-        //define our labels using the String, and a Label style consisting of a font and color
         scoreLabel = new Label(String.format("%02d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreTextLabel = new Label("Score:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         table.add(scoreTextLabel).padTop(5);

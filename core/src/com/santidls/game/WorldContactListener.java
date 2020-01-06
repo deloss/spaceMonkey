@@ -41,6 +41,10 @@ public class WorldContactListener implements ContactListener {
                 ((Pincho)fixA.getUserData()).destroy();
                 ((Pincho)fixB.getUserData()).destroy();
                 break;
+
+            case Consts.PJ_BIT | Consts.ROCK_BIT:
+                screen.gameOver();
+                break;
         }
     }
 

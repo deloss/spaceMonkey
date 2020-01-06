@@ -76,7 +76,6 @@ public class Personaje extends Sprite {
         return body;
     }
     public void update(float dt){
-        System.out.println(String.format("x/y position: %1f, %2f", body.getPosition().x, body.getPosition().y));
         setRegion((TextureRegion)pjAnimation.getKeyFrame(stateTimer, true));
         boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
         if(gyroscopeAvail){
@@ -96,25 +95,9 @@ public class Personaje extends Sprite {
             System.out.println(velX * 10 * 2 / getWidth());
             body.setAngularVelocity(-1 * (velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth()));
             setRotation((float)(body.getAngle() * 180 / Math.PI));
-
-
         } else {
-            contador++;
-            if(contador > 10) {
-                System.out.println(dt);
-                contador = 0;
-                setOrigin((body.getPosition().x / PIXELES_POR_METRO) + getWidth()/2, (body.getPosition().y / PIXELES_POR_METRO) + getHeight() / 2);
-                rotate(10);
-            }
-            //System.out.println("No hay giroscopio");
-            //setPosition((body.getPosition().x + getWidth() / 2), (body.getPosition().y + getHeight() / 2));
+            setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         }
-
-
-
-
-
-
 
         stateTimer += dt;
     }

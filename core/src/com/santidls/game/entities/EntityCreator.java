@@ -3,23 +3,32 @@ package com.santidls.game.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.santidls.game.Screens.GameScreen;
+import com.santidls.game.SpaceMonkey;
 import com.santidls.game.utils.Utils;
 
 public class EntityCreator {
 
     //cambiar por assetmanager
-    public static Texture pinchoTexture1 = new Texture("roca1.png");
-    public static Texture pinchoTexture2 = new Texture("roca2.png");
-    public static Texture pinchoTexture3 = new Texture("roca3.png");
+    private Texture pinchoTexture1;
+    private Texture pinchoTexture2;
+    private Texture pinchoTexture3;
+    private Texture banana;
     //
 
     private static EntityCreator instance;
+    private SpaceMonkey game;
 
-    private EntityCreator() {}
+    private EntityCreator(SpaceMonkey game) {
+        this.game = game;
+        pinchoTexture1 = game.getManager().get("roca1.png");
+        pinchoTexture2 = game.getManager().get("roca2.png");
+        pinchoTexture3 = game.getManager().get("roca3.png");
+        banana = game.getManager().get("banana.png");
+    }
 
-    public static EntityCreator getInstance() {
+    public static EntityCreator getInstance(SpaceMonkey game) {
         if(instance == null)
-            instance = new EntityCreator();
+            instance = new EntityCreator(game);
         return instance;
     }
 
@@ -38,6 +47,6 @@ public class EntityCreator {
     }
 
     public Estrella createStar(Vector2 position, GameScreen game) {
-        return new Estrella(new Texture("banana.png"), position, game);
+        return new Estrella(banana, position, game);
     }
 }
