@@ -5,7 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,12 +17,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.santidls.game.utils.Consts;
 import com.santidls.game.Screens.GameScreen;
 
 import static com.santidls.game.utils.Consts.LINEAR_VELOCITY_ROTATION_RELATION;
 import static com.santidls.game.utils.Consts.MAX_VELOCITY;
 import static com.santidls.game.utils.Consts.PIXELES_POR_METRO;
+import static com.santidls.game.utils.Consts.SCREEN_RATIO;
 
 /**
  * Created by Santiago on 15/01/2018.
@@ -30,18 +35,28 @@ public class Personaje extends Sprite {
     private Body body;
     private World world;
     private int contador = 0;
+    private Animation pjAnimation;
+    private float stateTimer;
 
-    public Personaje(Texture texture, Vector2 posicion, GameScreen game){
-        super(texture);
+    public Personaje(Vector2 posicion, GameScreen game){
         world=game.getWorld();
         this.posicion=posicion;
-        setSize(1,1);
+        setSize(1,1 * SCREEN_RATIO);
         setPosition(posicion.x + getWidth()/2, posicion.y + getHeight()/2);
         setOrigin((posicion.x / PIXELES_POR_METRO) + getWidth()/2, (posicion.y / PIXELES_POR_METRO) + getHeight() / 2);
         crearPj();
+        stateTimer = 0;
     }
 
     public void crearPj(){
+
+        Array<TextureRegion> frames = new Array<>();
+        Texture pjTexture = new Texture("space-monkey-animation.png");
+        for(int i = 0; i < 3; i++) {
+            frames.add(new TextureRegion(pjTexture, i * 1169, 0, 1169, 2841));
+        }
+        pjAnimation = new Animation(0.5f, frames);
+
         BodyDef bdef=new BodyDef();
         bdef.position.set(posicion.x,posicion.y);
         bdef.type= BodyDef.BodyType.DynamicBody;
@@ -61,7 +76,8 @@ public class Personaje extends Sprite {
         return body;
     }
     public void update(float dt){
-
+        System.out.println(String.format("x/y position: %1f, %2f", body.getPosition().x, body.getPosition().y));
+        setRegion((TextureRegion)pjAnimation.getKeyFrame(stateTimer, true));
         boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
         if(gyroscopeAvail){
             float gyroX = Gdx.input.getGyroscopeX();
@@ -78,7 +94,7 @@ public class Personaje extends Sprite {
             //body.setTransform(body.getPosition(), velX * 2 / getWidth());
             body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
             System.out.println(velX * 10 * 2 / getWidth());
-            body.setAngularVelocity(velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth());
+            body.setAngularVelocity(-1 * (velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth()));
             setRotation((float)(body.getAngle() * 180 / Math.PI));
 
 
@@ -100,7 +116,7 @@ public class Personaje extends Sprite {
 
 
 
-
+        stateTimer += dt;
     }
 
     private float normalizeSpeed(float velocity) {

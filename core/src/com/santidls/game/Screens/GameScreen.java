@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.santidls.game.SpaceMonkey;
+import com.santidls.game.entities.ScreenBorders;
 import com.santidls.game.utils.Consts;
 import com.santidls.game.entities.EntityCreator;
 import com.santidls.game.entities.Estrella;
@@ -51,12 +52,13 @@ public class GameScreen extends BaseScreen {
         hud = new Hud(sb);
         pj = entityCreator.createPj(new Vector2(6,3),this);
         contadorRock = 0;
+        new ScreenBorders(this);
         pinchosAEliminar = new Array<>();
-        /*pinchos.add(entityCreator.createRock(new Vector2(0.2f,3), (float)Math.PI,this));
+        pinchos.add(entityCreator.createRock(new Vector2(0.2f,3), (float)Math.PI,this));
         pinchos.add(entityCreator.createRock(new Vector2(11.8f,3),0,this));
         pinchos.add(entityCreator.createRock(new Vector2(6,5.8f),(float)Math.PI/2,this));
         pinchos.add(entityCreator.createRock(new Vector2(6,0.2f),(float)-Math.PI/2,this));
-        pinchos.add(entityCreator.createRock(new Vector2(0.2f,0.2f),(float)(-5*Math.PI/6),this));*/
+        pinchos.add(entityCreator.createRock(new Vector2(0.2f,0.2f),(float)(-5*Math.PI/6),this));
         estrella = entityCreator.createStar(new Vector2(1f,0.2f),this);
         /* Input processor to test in desktop
         //Gdx.input.setInputProcessor(new ProcesadorInput(pj.getBody()));
@@ -111,8 +113,8 @@ public class GameScreen extends BaseScreen {
         sb.setProjectionMatrix(gameCam.combined);
         sb.begin();
         pj.draw(sb);
-        /*for(Pincho pincho : pinchos)
-            pincho.draw(sb);*/
+        for(Pincho pincho : pinchos)
+            pincho.draw(sb);
         estrella.draw(sb);
         sb.end();
 

@@ -10,14 +10,14 @@ public class Utils {
     private static final int RIGHT_SIDE = 1;
     private static final int TOP_SIDE = 2;
     private static final int BOTTOM_SIDE = 3;
+    private static Random rand = new Random();
 
     public static Vector2 getRandomLocationForStar(float pjPositionX, float pjPositionY) {
-        Random rand = new Random();
         float xPosition;
         float yPosition;
         do {
-            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO);
-            yPosition = rand.nextInt(Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
+            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO - 1);
+            yPosition = rand.nextInt(Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO - 1);
         }while(euclidianDistance(xPosition, yPosition, pjPositionX, pjPositionY) < 5);
         return new Vector2(xPosition, yPosition);
     }
@@ -27,7 +27,6 @@ public class Utils {
     }
 
     public static Vector3 generateRandomLocationForRock() {
-        Random rand = new Random();
         float xPosition;
         float yPosition;
         float angle;
@@ -53,5 +52,9 @@ public class Utils {
             yPosition = Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO;
         }
         return new Vector3(xPosition, yPosition, angle);
+    }
+
+    public static int getRandomInt(int finalInt) {
+        return rand.nextInt(3);
     }
 }

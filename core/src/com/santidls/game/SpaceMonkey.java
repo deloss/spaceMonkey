@@ -10,6 +10,7 @@ import com.santidls.game.Screens.GameScreen;
 
 public class SpaceMonkey extends Game {
 	public SpriteBatch batch;
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();

@@ -66,6 +66,7 @@ public class Pincho extends Sprite {
             destroyed = true;
         }
         if(!destroyed) {
+            setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
             contador += dt;
             if (contador > 6) {
                 body.setLinearVelocity(body.getLinearVelocity().scl(-1));

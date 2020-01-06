@@ -20,6 +20,7 @@ import com.santidls.game.Screens.GameScreen;
  */
 
 public class Estrella extends Sprite {
+    private static final float BANANA_SIZE = 0.5f;
     private Body body;
     private Fixture fixture;
     private Vector2 posicion;
@@ -31,7 +32,7 @@ public class Estrella extends Sprite {
         world=game.getWorld();
         posicion=position;
         setPosition(posicion.x,posicion.y);
-        setSize(1,1);
+        setSize(BANANA_SIZE,BANANA_SIZE);
         crearEstrella();
     }
 
@@ -43,10 +44,10 @@ public class Estrella extends Sprite {
         FixtureDef fdef=new FixtureDef();
         PolygonShape shape=new PolygonShape();
         Vector2[] vertices=new Vector2[4];
-        vertices[0]=new Vector2(1,1);
-        vertices[1]=new Vector2(0,1);
+        vertices[0]=new Vector2(BANANA_SIZE,BANANA_SIZE);
+        vertices[1]=new Vector2(0,BANANA_SIZE);
         vertices[2]=new Vector2(0,0);
-        vertices[3]=new Vector2(1,0);
+        vertices[3]=new Vector2(BANANA_SIZE,0);
         shape.set(vertices);
         fdef.shape=shape;
         fdef.density=1;
