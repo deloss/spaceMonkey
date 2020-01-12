@@ -2,6 +2,7 @@ package com.santidls.game.entities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.santidls.game.Screens.GameScreen;
 import com.santidls.game.SpaceMonkey;
 import com.santidls.game.utils.Utils;
@@ -32,14 +33,15 @@ public class EntityCreator {
         return instance;
     }
 
-    public Pincho createRock(Vector2 position, float angulo, GameScreen game) {
+    public Pincho createRock(GameScreen game) {
+        Vector3 position = Utils.generateRandomLocationForRock();
         int rocaTextureIndex = Utils.getRandomInt(3);
         if(rocaTextureIndex == 0)
-            return new Pincho(pinchoTexture1, new Vector2(position.x, position.y), angulo, game);
+            return new Pincho(pinchoTexture1, new Vector2(position.x, position.y), position.z, game);
         else if(rocaTextureIndex == 1)
-            return new Pincho(pinchoTexture2, new Vector2(position.x, position.y), angulo, game);
+            return new Pincho(pinchoTexture2, new Vector2(position.x, position.y), position.z, game);
         else
-            return new Pincho(pinchoTexture3, new Vector2(position.x, position.y), angulo, game);
+            return new Pincho(pinchoTexture3, new Vector2(position.x, position.y), position.z, game);
     }
 
     public Personaje createPj(Vector2 position, GameScreen game) {
@@ -47,6 +49,6 @@ public class EntityCreator {
     }
 
     public Estrella createStar(Vector2 position, GameScreen game) {
-        return new Estrella(banana, position, game);
+        return new Estrella(banana, Utils.getRandomLocationForStar(position.x, position.y), game);
     }
 }

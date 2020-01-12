@@ -43,7 +43,7 @@ public class MenuScreen extends BaseScreen {
 
         // Also, create an image. Images are actors that only display some texture. Useful if you
         // want to display a texture in a Scene2D based screen but you don't want to rewrite code.
-        logo = new Image(game.getManager().get("space-monkey.png", Texture.class));
+        logo = new Image(game.getManager().get("space-monkey-solo.png", Texture.class));
 
         // Add capture listeners. Capture listeners have one method, changed, that is executed
         // when the button is pressed or when the user interacts somehow with the widget. They are

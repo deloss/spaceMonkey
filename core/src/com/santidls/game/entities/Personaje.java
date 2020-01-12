@@ -31,31 +31,35 @@ import static com.santidls.game.utils.Consts.SCREEN_RATIO;
  */
 
 public class Personaje extends Sprite {
+    private final float PJ_SIZE = 0.75f;
+    private boolean alive;
     private Vector2 posicion;
     private Body body;
     private World world;
     private int contador = 0;
-    private Animation pjAnimation;
+    private Animation pjAnimationAlive;
+    private Texture pjDeadTexture;
     private float stateTimer;
 
     public Personaje(Vector2 posicion, GameScreen game){
         world=game.getWorld();
         this.posicion=posicion;
-        setSize(1,1 * SCREEN_RATIO);
+        setSize(PJ_SIZE,PJ_SIZE * SCREEN_RATIO);
         setPosition(posicion.x + getWidth()/2, posicion.y + getHeight()/2);
         setOrigin((posicion.x / PIXELES_POR_METRO) + getWidth()/2, (posicion.y / PIXELES_POR_METRO) + getHeight() / 2);
         crearPj();
+        pjDeadTexture = new Texture("pj_dead.png");
         stateTimer = 0;
     }
 
     public void crearPj(){
-
+        alive = true;
         Array<TextureRegion> frames = new Array<>();
         Texture pjTexture = new Texture("space-monkey-animation.png");
         for(int i = 0; i < 3; i++) {
-            frames.add(new TextureRegion(pjTexture, i * 1169, 0, 1169, 2841));
+            frames.add(new TextureRegion(pjTexture, i * 1162, 0, 1162, 1638));
         }
-        pjAnimation = new Animation(0.5f, frames);
+        pjAnimationAlive = new Animation(0.5f, frames);
 
         BodyDef bdef=new BodyDef();
         bdef.position.set(posicion.x,posicion.y);
@@ -76,30 +80,34 @@ public class Personaje extends Sprite {
         return body;
     }
     public void update(float dt){
-        setRegion((TextureRegion)pjAnimation.getKeyFrame(stateTimer, true));
-        boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
-        if(gyroscopeAvail){
-            float gyroX = Gdx.input.getGyroscopeX();
-            float gyroY = Gdx.input.getGyroscopeY();
-            float velX = normalizeSpeed(gyroX);
-            float velY = normalizeSpeed(gyroY);
+        if(alive) {
+            setRegion((TextureRegion) pjAnimationAlive.getKeyFrame(stateTimer, true));
+            boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
+            if (gyroscopeAvail) {
+                float gyroX = Gdx.input.getGyroscopeX();
+                float gyroY = Gdx.input.getGyroscopeY();
+                float velX = normalizeSpeed(gyroX);
+                float velY = normalizeSpeed(gyroY);
 
-            /*System.out.println("Velocity x = " + velX);
-            System.out.println("Velocity y = " + velY);
-            System.out.println(String.format("Position/WorldCenter : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, body.getWorldCenter().x, body.getWorldCenter().y));
-            System.out.println(String.format("bodyPosition/spritePosition : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, getX(), getY()));*/
+                /*System.out.println("Velocity x = " + velX);
+                System.out.println("Velocity y = " + velY);
+                System.out.println(String.format("Position/WorldCenter : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, body.getWorldCenter().x, body.getWorldCenter().y));
+                System.out.println(String.format("bodyPosition/spritePosition : (%1f, %2f) / (%3f, %4f)", body.getPosition().x, body.getPosition().y, getX(), getY()));*/
 
-            setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
-            //body.setTransform(body.getPosition(), velX * 2 / getWidth());
-            body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
-            System.out.println(velX * 10 * 2 / getWidth());
-            body.setAngularVelocity(-1 * (velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth()));
-            setRotation((float)(body.getAngle() * 180 / Math.PI));
+                setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+                //body.setTransform(body.getPosition(), velX * 2 / getWidth());
+                body.applyLinearImpulse(new Vector2(velX, velY), body.getWorldCenter(), true);
+                System.out.println(velX * 10 * 2 / getWidth());
+                body.setAngularVelocity(-1 * (velX * LINEAR_VELOCITY_ROTATION_RELATION * 2 / getWidth()));
+                setRotation((float) (body.getAngle() * 180 / Math.PI));
+            } else {
+                setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
+            }
+
+            stateTimer += dt;
         } else {
-            setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         }
-
-        stateTimer += dt;
     }
 
     private float normalizeSpeed(float velocity) {
@@ -109,6 +117,11 @@ public class Personaje extends Sprite {
             return - MAX_VELOCITY;
         else
             return velocity;
+    }
+
+    public void pjDead() {
+        alive = false;
+        setRegion(pjDeadTexture);
     }
 
 }

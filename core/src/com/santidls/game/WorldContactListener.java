@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.santidls.game.Screens.GameScreen;
 import com.santidls.game.entities.Estrella;
+import com.santidls.game.entities.Personaje;
 import com.santidls.game.entities.Pincho;
 import com.santidls.game.utils.Consts;
 
@@ -43,6 +44,10 @@ public class WorldContactListener implements ContactListener {
                 break;
 
             case Consts.PJ_BIT | Consts.ROCK_BIT:
+                if(fixA.getFilterData().categoryBits == Consts.PJ_BIT)
+                    ((Personaje)fixA.getUserData()).pjDead();
+                else
+                    ((Personaje)fixB.getUserData()).pjDead();
                 screen.gameOver();
                 break;
         }

@@ -41,10 +41,11 @@ public class GameScreen extends BaseScreen {
     private float contadorRock;
     private EntityCreator entityCreator;
     Array<Pincho> pinchosAEliminar;
+    private Texture backgroundTexture;
     public GameScreen(SpaceMonkey game){
         this.game = game;
         entityCreator = EntityCreator.getInstance(game);
-        renderer=new Box2DDebugRenderer();
+        //renderer=new Box2DDebugRenderer();
         world=new World(new Vector2(0,0),true);
         gameCam=new OrthographicCamera(Consts.GAME_WIDTH/Consts.PIXELES_POR_METRO,Consts.GAME_HEIGHT/Consts.PIXELES_POR_METRO);
         viewport=new FitViewport(gameCam.viewportWidth,gameCam.viewportHeight,gameCam);
@@ -54,13 +55,14 @@ public class GameScreen extends BaseScreen {
         pj = entityCreator.createPj(new Vector2(6,3),this);
         contadorRock = 0;
         new ScreenBorders(this);
+        backgroundTexture = new Texture("fondogalaxia.png");
         pinchosAEliminar = new Array<>();
-        pinchos.add(entityCreator.createRock(new Vector2(0.2f,3), (float)Math.PI,this));
-        pinchos.add(entityCreator.createRock(new Vector2(11.8f,3),0,this));
-        pinchos.add(entityCreator.createRock(new Vector2(6,5.8f),(float)Math.PI/2,this));
-        pinchos.add(entityCreator.createRock(new Vector2(6,0.2f),(float)-Math.PI/2,this));
-        pinchos.add(entityCreator.createRock(new Vector2(0.2f,0.2f),(float)(-5*Math.PI/6),this));
-        estrella = entityCreator.createStar(new Vector2(1f,0.2f),this);
+        pinchos.add(entityCreator.createRock(this));
+        pinchos.add(entityCreator.createRock(this));
+        pinchos.add(entityCreator.createRock(this));
+        pinchos.add(entityCreator.createRock(this));
+        pinchos.add(entityCreator.createRock(this));
+        estrella = entityCreator.createStar(pj.getBody().getPosition(),this);
         /* Input processor to test in desktop
         //Gdx.input.setInputProcessor(new ProcesadorInput(pj.getBody()));
         */
@@ -93,16 +95,13 @@ public class GameScreen extends BaseScreen {
         }
 
         if(estrella.isDestroyed()) {
-            Vector3 newRockPosition = Utils.generateRandomLocationForRock();
-            pinchos.add(entityCreator.createRock(new Vector2(newRockPosition.x,newRockPosition.y), newRockPosition.z,this));
-            estrella = new Estrella(new Texture("banana.png"), Utils.getRandomLocationForStar(pj.getX(), pj.getY()), this);
+            estrella = entityCreator.createStar(pj.getBody().getPosition(), this);
         }
         estrella.update(delta);
-        /*if(contadorRock > Consts.TIME_CREATION_ROCK) {
-            Vector3 newRockPosition = Utils.generateRandomLocationForRock();
-            pinchos.add(entityCreator.createRock(new Vector2(newRockPosition.x,newRockPosition.y), newRockPosition.z,this));
+        if(contadorRock > Consts.TIME_CREATION_ROCK) {
+            pinchos.add(entityCreator.createRock(this));
             contadorRock = 0;
-        }*/
+        }
     }
 
     @Override
@@ -111,9 +110,10 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.step(delta,6,2);
-        renderer.render(world,gameCam.combined);
+        //renderer.render(world,gameCam.combined);
         sb.setProjectionMatrix(gameCam.combined);
         sb.begin();
+        sb.draw(backgroundTexture, 0, 0, Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO, Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
         pj.draw(sb);
         for(Pincho pincho : pinchos)
             pincho.draw(sb);
@@ -134,15 +134,15 @@ public class GameScreen extends BaseScreen {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 game.gameOver();
             }
         });
-        try {
-            thread.sleep(1000);
-            thread.run();
-        }catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
+        thread.start();
     }
 
 }
