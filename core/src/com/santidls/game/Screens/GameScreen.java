@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.santidls.game.SpaceMonkey;
+import com.santidls.game.entities.RockDestroyerBorders;
 import com.santidls.game.entities.ScreenBorders;
 import com.santidls.game.utils.Consts;
 import com.santidls.game.entities.EntityCreator;
@@ -56,6 +57,7 @@ public class GameScreen extends BaseScreen {
         pj = entityCreator.createPj(new Vector2(6,3),this);
         contadorRock = 0;
         new ScreenBorders(this);
+        new RockDestroyerBorders(this);
         backgroundTexture = game.getManager().get("fondogalaxia.png");
         pinchosAEliminar = new Array<>();
         pinchos.add(entityCreator.createRock(this));
