@@ -20,6 +20,7 @@ import com.santidls.game.entities.EntityCreator;
 import com.santidls.game.entities.Estrella;
 import com.santidls.game.entities.Personaje;
 import com.santidls.game.entities.Pincho;
+import com.santidls.game.utils.ProcesadorInput;
 import com.santidls.game.utils.Utils;
 import com.santidls.game.WorldContactListener;
 
@@ -45,7 +46,7 @@ public class GameScreen extends BaseScreen {
     public GameScreen(SpaceMonkey game){
         this.game = game;
         entityCreator = EntityCreator.getInstance(game);
-        //renderer=new Box2DDebugRenderer();
+        renderer=new Box2DDebugRenderer();
         world=new World(new Vector2(0,0),true);
         gameCam=new OrthographicCamera(Consts.GAME_WIDTH/Consts.PIXELES_POR_METRO,Consts.GAME_HEIGHT/Consts.PIXELES_POR_METRO);
         viewport=new FitViewport(gameCam.viewportWidth,gameCam.viewportHeight,gameCam);
@@ -55,7 +56,7 @@ public class GameScreen extends BaseScreen {
         pj = entityCreator.createPj(new Vector2(6,3),this);
         contadorRock = 0;
         new ScreenBorders(this);
-        backgroundTexture = new Texture("fondogalaxia.png");
+        backgroundTexture = game.getManager().get("fondogalaxia.png");
         pinchosAEliminar = new Array<>();
         pinchos.add(entityCreator.createRock(this));
         pinchos.add(entityCreator.createRock(this));
@@ -63,9 +64,9 @@ public class GameScreen extends BaseScreen {
         pinchos.add(entityCreator.createRock(this));
         pinchos.add(entityCreator.createRock(this));
         estrella = entityCreator.createStar(pj.getBody().getPosition(),this);
-        /* Input processor to test in desktop
+
         //Gdx.input.setInputProcessor(new ProcesadorInput(pj.getBody()));
-        */
+
         world.setContactListener(new WorldContactListener(this));
     }
     public OrthographicCamera getCam(){
@@ -110,7 +111,6 @@ public class GameScreen extends BaseScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.step(delta,6,2);
-        //renderer.render(world,gameCam.combined);
         sb.setProjectionMatrix(gameCam.combined);
         sb.begin();
         sb.draw(backgroundTexture, 0, 0, Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO, Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
@@ -119,6 +119,7 @@ public class GameScreen extends BaseScreen {
             pincho.draw(sb);
         estrella.draw(sb);
         sb.end();
+        renderer.render(world,gameCam.combined);
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

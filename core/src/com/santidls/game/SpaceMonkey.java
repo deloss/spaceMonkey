@@ -28,6 +28,9 @@ public class SpaceMonkey extends Game {
 		manager.load("banana.png", Texture.class);
 		manager.load("space-monkey-solo.png", Texture.class);
 		manager.load("space-monkey-animation.png", Texture.class);
+		manager.load("pj_dead.png", Texture.class);
+		manager.load("fondogalaxia.png", Texture.class);
+		manager.load("rock_destroying.png", Texture.class);
 		loadingScreen = new LoadingScreen(this);
 		batch = new SpriteBatch();
 		setScreen(loadingScreen);

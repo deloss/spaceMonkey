@@ -50,6 +50,12 @@ public class WorldContactListener implements ContactListener {
                     ((Personaje)fixB.getUserData()).pjDead();
                 screen.gameOver();
                 break;
+            case Consts.ROCK_BIT | Consts.ROCK_DESTOYER_BORDER_BIT:
+                if(fixA.getFilterData().categoryBits == Consts.ROCK_BIT)
+                    ((Pincho)fixA.getUserData()).destroy();
+                else
+                    ((Pincho)fixB.getUserData()).destroy();
+
         }
     }
 

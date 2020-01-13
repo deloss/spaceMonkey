@@ -2,6 +2,7 @@ package com.santidls.game.utils;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.santidls.game.entities.Pincho;
 
 import java.util.Random;
 
@@ -35,26 +36,45 @@ public class Utils {
         if (side == LEFT_SIDE) {
             double random = ((Math.random() / 2) * 2 * Math.PI / 4) + (3 * Math.PI / 4);
             angle = (float) random; // antes era Math.PI
-            xPosition = 0;
+            xPosition = -Pincho.ROCK_SIZE - ROCK_OFFSET;
             yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
         }
         else if (side == RIGHT_SIDE) {
-            double random = -1 * (((Math.random() / 2) * 2 * Math.PI / 4) + (3 * Math.PI / 4));
-            angle = (float) random; // Antes era 0
-            xPosition = Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO;
+            xPosition = (Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO) + Pincho.ROCK_SIZE + ROCK_OFFSET;
             yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
+            double random;
+            if( yPosition < Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 4) )
+                random = ((Math.random() / 4) * Math.PI);
+            else if(yPosition > Consts.GAME_HEIGHT * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = -1 * ((Math.random() / 4) * Math.PI);
+            else
+                random = (Math.random() / 2) * Math.PI - Math.PI / 4;
+            angle = (float) random; // Antes era 0
+
         }
         else if (side == TOP_SIDE) {
-            double random = (((Math.random() / 2) * 2 * Math.PI / 4) + (3 * Math.PI / 4)) + Math.PI / 2;
-            angle = (float) random; // Antes era -Math.PI/2
             xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
-            yPosition = 0;
+            yPosition = (Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) + Pincho.ROCK_SIZE + ROCK_OFFSET;
+            double random;
+            if( xPosition < Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 4) )
+                random = -(((Math.random() / 4) * Math.PI) + (Math.PI / 2));
+            else if(xPosition > Consts.GAME_WIDTH * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = ((Math.random() / 4) * Math.PI) + (Math.PI / 2);
+            else
+                random = -((Math.random() / 2) * Math.PI) + (Math.PI / 4);
+            angle = (float) random;
         }
         else {
-            double random = (((Math.random() / 2) * 2 * Math.PI / 4) + (3 * Math.PI / 4)) - Math.PI / 2;
+            xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
+            yPosition = - Pincho.ROCK_SIZE - ROCK_OFFSET;
+            double random;
+            if( xPosition < Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 4) )
+                random = (((Math.random() / 4) * Math.PI) + (Math.PI / 2));
+            else if(xPosition > Consts.GAME_WIDTH * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = -((Math.random() / 4) * Math.PI) + (Math.PI / 2);
+            else
+                random = ((Math.random() / 2) * Math.PI) + (Math.PI / 4);
             angle = (float) random;
-            xPosition = rand.nextInt(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO);
-            yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
         }
         return new Vector3(xPosition, yPosition, angle);
     }

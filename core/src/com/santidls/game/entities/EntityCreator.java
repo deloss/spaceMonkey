@@ -14,6 +14,7 @@ public class EntityCreator {
     private Texture pinchoTexture2;
     private Texture pinchoTexture3;
     private Texture banana;
+    private Texture rockDestroyingTexture;
     //
 
     private static EntityCreator instance;
@@ -25,6 +26,7 @@ public class EntityCreator {
         pinchoTexture2 = game.getManager().get("roca2.png");
         pinchoTexture3 = game.getManager().get("roca3.png");
         banana = game.getManager().get("banana.png");
+        rockDestroyingTexture = game.getManager().get("rock_destroying.png");
     }
 
     public static EntityCreator getInstance(SpaceMonkey game) {
@@ -37,15 +39,15 @@ public class EntityCreator {
         Vector3 position = Utils.generateRandomLocationForRock();
         int rocaTextureIndex = Utils.getRandomInt(3);
         if(rocaTextureIndex == 0)
-            return new Pincho(pinchoTexture1, new Vector2(position.x, position.y), position.z, game);
+            return new Pincho(pinchoTexture1, rockDestroyingTexture, new Vector2(position.x, position.y), position.z, game);
         else if(rocaTextureIndex == 1)
-            return new Pincho(pinchoTexture2, new Vector2(position.x, position.y), position.z, game);
+            return new Pincho(pinchoTexture2, rockDestroyingTexture, new Vector2(position.x, position.y), position.z, game);
         else
-            return new Pincho(pinchoTexture3, new Vector2(position.x, position.y), position.z, game);
+            return new Pincho(pinchoTexture3, rockDestroyingTexture, new Vector2(position.x, position.y), position.z, game);
     }
 
     public Personaje createPj(Vector2 position, GameScreen game) {
-        return new Personaje(new Vector2(position.x, position.y), game);
+        return new Personaje((Texture) this.game.getManager().get("space-monkey-animation.png"), (Texture) this.game.getManager().get("pj_dead.png"),new Vector2(position.x, position.y), game);
     }
 
     public Estrella createStar(Vector2 position, GameScreen game) {

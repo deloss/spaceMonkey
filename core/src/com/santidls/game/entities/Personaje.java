@@ -40,24 +40,25 @@ public class Personaje extends Sprite {
     private Animation pjAnimationAlive;
     private Texture pjDeadTexture;
     private float stateTimer;
+    private Texture pjAliveTexture;
 
-    public Personaje(Vector2 posicion, GameScreen game){
+    public Personaje(Texture pjAliveTexture, Texture pjDeadTexture, Vector2 posicion, GameScreen game){
+        this.pjAliveTexture = pjAliveTexture;
+        this.pjDeadTexture = pjDeadTexture;
         world=game.getWorld();
         this.posicion=posicion;
         setSize(PJ_SIZE,PJ_SIZE * SCREEN_RATIO);
         setPosition(posicion.x + getWidth()/2, posicion.y + getHeight()/2);
         setOrigin((posicion.x / PIXELES_POR_METRO) + getWidth()/2, (posicion.y / PIXELES_POR_METRO) + getHeight() / 2);
         crearPj();
-        pjDeadTexture = new Texture("pj_dead.png");
         stateTimer = 0;
     }
 
     public void crearPj(){
         alive = true;
         Array<TextureRegion> frames = new Array<>();
-        Texture pjTexture = new Texture("space-monkey-animation.png");
         for(int i = 0; i < 3; i++) {
-            frames.add(new TextureRegion(pjTexture, i * 1162, 0, 1162, 1638));
+            frames.add(new TextureRegion(pjAliveTexture, i * 1162, 0, 1162, 1638));
         }
         pjAnimationAlive = new Animation(0.5f, frames);
 

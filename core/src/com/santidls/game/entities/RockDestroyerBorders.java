@@ -8,19 +8,19 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.santidls.game.Screens.GameScreen;
-import com.santidls.game.SpaceMonkey;
 import com.santidls.game.utils.Consts;
 
-public class ScreenBorders {
+public class RockDestroyerBorders {
     private static final float BORDER_SIZE = 1f;
+    private static final float BORDER_OFFSET = 4f;
 
 
-    public ScreenBorders(GameScreen game) {
+    public RockDestroyerBorders(GameScreen game) {
         World world = game.getWorld();
 
         //Borde izquierdo
         BodyDef bdef=new BodyDef();
-        bdef.position.set(0, Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 2));
+        bdef.position.set(-BORDER_OFFSET, Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 2));
         bdef.type= BodyDef.BodyType.StaticBody;
         Body body = world.createBody(bdef);
         FixtureDef fixDef=new FixtureDef();
@@ -29,12 +29,12 @@ public class ScreenBorders {
         fixDef.shape=shape;
         Fixture fixture = body.createFixture(fixDef);
         Filter filter = new Filter();
-        filter.maskBits = Consts.PJ_BIT;
+        filter.categoryBits = Consts.ROCK_DESTOYER_BORDER_BIT;
         fixture.setFilterData(filter);
 
         //Borde derecho
         bdef=new BodyDef();
-        bdef.position.set(Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO, Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 2));
+        bdef.position.set((Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO) + BORDER_OFFSET, Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 2));
         bdef.type= BodyDef.BodyType.StaticBody;
         body = world.createBody(bdef);
         fixDef=new FixtureDef();
@@ -43,12 +43,12 @@ public class ScreenBorders {
         fixDef.shape=shape;
         fixture = body.createFixture(fixDef);
         filter = new Filter();
-        filter.maskBits = Consts.PJ_BIT;
+        filter.categoryBits = Consts.ROCK_DESTOYER_BORDER_BIT;
         fixture.setFilterData(filter);
 
         //Borde arriba
         bdef=new BodyDef();
-        bdef.position.set(Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 2), (Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO));
+        bdef.position.set(Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 2), (Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) + BORDER_OFFSET);
         bdef.type= BodyDef.BodyType.StaticBody;
         body = world.createBody(bdef);
         fixDef=new FixtureDef();
@@ -57,12 +57,12 @@ public class ScreenBorders {
         fixDef.shape=shape;
         fixture = body.createFixture(fixDef);
         filter = new Filter();
-        filter.maskBits = Consts.PJ_BIT;
+        filter.categoryBits = Consts.ROCK_DESTOYER_BORDER_BIT;
         fixture.setFilterData(filter);
 
         //Borde abajo
         bdef=new BodyDef();
-        bdef.position.set(Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 2), 0);
+        bdef.position.set(Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 2), - BORDER_OFFSET);
         bdef.type= BodyDef.BodyType.StaticBody;
         body = world.createBody(bdef);
         fixDef=new FixtureDef();
@@ -71,7 +71,7 @@ public class ScreenBorders {
         fixDef.shape=shape;
         fixture = body.createFixture(fixDef);
         filter = new Filter();
-        filter.maskBits = Consts.PJ_BIT;
+        filter.categoryBits = Consts.ROCK_DESTOYER_BORDER_BIT;
         fixture.setFilterData(filter);
 
     }

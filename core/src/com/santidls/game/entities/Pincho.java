@@ -24,6 +24,7 @@ import static java.lang.Math.sin;
  */
 
 public class Pincho extends Sprite {
+    public static final float ROCK_SIZE = 0.8f;
     private Body body;
     private Fixture fixture;
     private Vector2 posicion;
@@ -34,24 +35,25 @@ public class Pincho extends Sprite {
     private float velocity;
     private float stateTimer;
     private Animation rockDestroying;
-    public Pincho(Texture texture, Vector2 position, float angulo, GameScreen game){
-        super(texture);
+    private Texture destroyingTexture;
+    public Pincho(Texture normalTexture, Texture destroyingTexture, Vector2 position, float angulo, GameScreen game){
+        super(normalTexture);
+        this.destroyingTexture = destroyingTexture;
         world=game.getWorld();
         posicion=position;
         setPosition(posicion.x,posicion.y);
         this.angulo=angulo;
         velocity = 2;
         stateTimer = 0;
-        setSize(1,1);
+        setSize(ROCK_SIZE,ROCK_SIZE);
         crearPinchos();
     }
 
     public void crearPinchos(){
 
         Array<TextureRegion> frames = new Array<>();
-        Texture pjTexture = new Texture("rock_destroying.png");
         for(int i = 0; i < 6; i++) {
-            frames.add(new TextureRegion(pjTexture, i * 573, 0, 573, 532));
+            frames.add(new TextureRegion(destroyingTexture, i * 573, 0, 573, 532));
         }
         rockDestroying = new Animation(0.2f, frames);
 
@@ -62,7 +64,7 @@ public class Pincho extends Sprite {
         FixtureDef fdef=new FixtureDef();
         CircleShape shape=new CircleShape();
         shape.setPosition(new Vector2(0, 0));
-        shape.setRadius(0.4f);
+        shape.setRadius(ROCK_SIZE / 2);
         fdef.shape=shape;
         fdef.density=100;
         fixture=body.createFixture(fdef);
@@ -73,7 +75,7 @@ public class Pincho extends Sprite {
         body.setTransform(body.getPosition(),angulo);
         body.setLinearVelocity((float)(-velocity*Math.cos((double)angulo)),(float)(-velocity*sin((double)angulo)));
     }
-    float contador=0;
+
     public void update(float dt){
         if(setToDestroy && !destroyed) {
             if(stateTimer == 0)
@@ -86,11 +88,6 @@ public class Pincho extends Sprite {
         }
         if(!destroyed) {
             setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
-            contador += dt;
-            if (contador > 6) {
-                body.setLinearVelocity(body.getLinearVelocity().scl(-1));
-                contador = 0;
-            }
         }
     }
 
