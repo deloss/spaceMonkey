@@ -34,46 +34,51 @@ public class Utils {
         float angle;
         int side = rand.nextInt(4);
         if (side == LEFT_SIDE) {
-            double random = ((Math.random() / 2) * 2 * Math.PI / 4) + (3 * Math.PI / 4);
-            angle = (float) random; // antes era Math.PI
-            xPosition = -Pincho.ROCK_SIZE - ROCK_OFFSET;
-            yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
+            xPosition = - Pincho.ROCK_SIZE - ROCK_OFFSET;
+            yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - 2 * ROCK_OFFSET) + ROCK_OFFSET;
+            double random;
+            if( yPosition < Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 4) )
+                random = ((Math.random()) * Math.PI / 4) + Math.PI;
+            else if(yPosition > Consts.GAME_HEIGHT * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = (-1 * (Math.random()) * Math.PI / 4) + Math.PI;
+            else
+                random = (Math.random() / 2) * Math.PI + 3 * Math.PI / 4;
+            angle = (float) random;
         }
         else if (side == RIGHT_SIDE) {
             xPosition = (Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO) + Pincho.ROCK_SIZE + ROCK_OFFSET;
-            yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
+            yPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - 2 * ROCK_OFFSET) + ROCK_OFFSET;
             double random;
             if( yPosition < Consts.GAME_HEIGHT / (Consts.PIXELES_POR_METRO * 4) )
-                random = ((Math.random() / 4) * Math.PI);
-            else if(yPosition > Consts.GAME_HEIGHT * 3 / (Consts.PIXELES_POR_METRO * 4))
                 random = -1 * ((Math.random() / 4) * Math.PI);
+            else if(yPosition > Consts.GAME_HEIGHT * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = ((Math.random() / 4) * Math.PI);
             else
                 random = (Math.random() / 2) * Math.PI - Math.PI / 4;
-            angle = (float) random; // Antes era 0
-
-        }
-        else if (side == TOP_SIDE) {
-            xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
-            yPosition = (Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) + Pincho.ROCK_SIZE + ROCK_OFFSET;
-            double random;
-            if( xPosition < Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 4) )
-                random = -(((Math.random() / 4) * Math.PI) + (Math.PI / 2));
-            else if(xPosition > Consts.GAME_WIDTH * 3 / (Consts.PIXELES_POR_METRO * 4))
-                random = ((Math.random() / 4) * Math.PI) + (Math.PI / 2);
-            else
-                random = -((Math.random() / 2) * Math.PI) + (Math.PI / 4);
             angle = (float) random;
         }
-        else {
-            xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - ROCK_OFFSET) + ROCK_OFFSET;
-            yPosition = - Pincho.ROCK_SIZE - ROCK_OFFSET;
+        else if (side == TOP_SIDE) {
+            xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - 1 * ROCK_OFFSET) + ROCK_OFFSET;
+            yPosition = (Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) + Pincho.ROCK_SIZE + ROCK_OFFSET;
             double random;
             if( xPosition < Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 4) )
                 random = (((Math.random() / 4) * Math.PI) + (Math.PI / 2));
             else if(xPosition > Consts.GAME_WIDTH * 3 / (Consts.PIXELES_POR_METRO * 4))
-                random = -((Math.random() / 4) * Math.PI) + (Math.PI / 2);
+                random = -1 * ((Math.random() / 4) * Math.PI) + (Math.PI / 2);
             else
                 random = ((Math.random() / 2) * Math.PI) + (Math.PI / 4);
+            angle = (float) random;
+        }
+        else {
+            xPosition = rand.nextInt((Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO) - 1 * ROCK_OFFSET) + ROCK_OFFSET;
+            yPosition = - Pincho.ROCK_SIZE - ROCK_OFFSET;
+            double random;
+            if( xPosition < Consts.GAME_WIDTH / (Consts.PIXELES_POR_METRO * 4) )
+                random = ( -1 * ((Math.random() / 4) * Math.PI) - (Math.PI / 2) );
+            else if(xPosition > Consts.GAME_WIDTH * 3 / (Consts.PIXELES_POR_METRO * 4))
+                random = ((Math.random() / 4) * Math.PI) - (Math.PI / 2);
+            else
+                random = -1 * ((Math.random() / 2) * Math.PI) - (Math.PI / 4);
             angle = (float) random;
         }
         return new Vector3(xPosition, yPosition, angle);

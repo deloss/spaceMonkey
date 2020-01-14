@@ -42,13 +42,13 @@ public class SpaceMonkey extends Game {
 
 	public void finishLoading() {
 		gameOverScreen = new GameOverScreen(this);
-		gameScreen = new GameScreen(this);
 		menuScreen = new MenuScreen(this);
 		setScreen(menuScreen);
 	}
 
 	public void newGame() {
-		gameScreen.dispose();
+		if(gameScreen != null)
+			gameScreen.dispose();
 		gameScreen = new GameScreen(this);
 		setScreen(gameScreen);
 	}

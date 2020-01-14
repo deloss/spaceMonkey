@@ -43,13 +43,13 @@ public class WorldContactListener implements ContactListener {
                 ((Pincho)fixB.getUserData()).destroy();
                 break;
 
-            case Consts.PJ_BIT | Consts.ROCK_BIT:
+            /*case Consts.PJ_BIT | Consts.ROCK_BIT:
                 if(fixA.getFilterData().categoryBits == Consts.PJ_BIT)
                     ((Personaje)fixA.getUserData()).pjDead();
                 else
                     ((Personaje)fixB.getUserData()).pjDead();
                 screen.gameOver();
-                break;
+                break;*/ //descomentar
             case Consts.ROCK_BIT | Consts.ROCK_DESTOYER_BORDER_BIT:
                 if(fixA.getFilterData().categoryBits == Consts.ROCK_BIT)
                     ((Pincho)fixA.getUserData()).destroy();

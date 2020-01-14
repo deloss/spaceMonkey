@@ -52,7 +52,7 @@ public class MenuScreen extends BaseScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // Take me to the game screen!
-                game.setScreen(game.gameScreen);
+                game.newGame();
             }
         });
 

@@ -42,12 +42,12 @@ public class GameScreen extends BaseScreen {
     private SpaceMonkey game;
     private float contadorRock;
     private EntityCreator entityCreator;
-    Array<Pincho> pinchosAEliminar;
+    private Array<Pincho> pinchosAEliminar;
     private Texture backgroundTexture;
     public GameScreen(SpaceMonkey game){
         this.game = game;
         entityCreator = EntityCreator.getInstance(game);
-        renderer=new Box2DDebugRenderer();
+        //renderer=new Box2DDebugRenderer();
         world=new World(new Vector2(0,0),true);
         gameCam=new OrthographicCamera(Consts.GAME_WIDTH/Consts.PIXELES_POR_METRO,Consts.GAME_HEIGHT/Consts.PIXELES_POR_METRO);
         viewport=new FitViewport(gameCam.viewportWidth,gameCam.viewportHeight,gameCam);
@@ -121,7 +121,7 @@ public class GameScreen extends BaseScreen {
             pincho.draw(sb);
         estrella.draw(sb);
         sb.end();
-        renderer.render(world,gameCam.combined);
+        //renderer.render(world,gameCam.combined);
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
