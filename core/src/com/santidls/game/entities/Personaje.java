@@ -25,6 +25,7 @@ import static com.santidls.game.utils.Consts.LINEAR_VELOCITY_ROTATION_RELATION;
 import static com.santidls.game.utils.Consts.MAX_VELOCITY;
 import static com.santidls.game.utils.Consts.PIXELES_POR_METRO;
 import static com.santidls.game.utils.Consts.SCREEN_RATIO;
+import static com.santidls.game.utils.Consts.VELOCITY_FACTOR;
 
 /**
  * Created by Santiago on 15/01/2018.
@@ -85,10 +86,12 @@ public class Personaje extends Sprite {
             setRegion((TextureRegion) pjAnimationAlive.getKeyFrame(stateTimer, true));
             boolean gyroscopeAvail = Gdx.input.isPeripheralAvailable(Input.Peripheral.Gyroscope);
             if (gyroscopeAvail) {
-                float gyroX = Gdx.input.getGyroscopeX();
-                float gyroY = Gdx.input.getGyroscopeY();
+                float gyroX = Gdx.input.getGyroscopeX() / VELOCITY_FACTOR;
+                float gyroY = Gdx.input.getGyroscopeY() / VELOCITY_FACTOR;
                 float velX = normalizeSpeed(gyroX);
                 float velY = normalizeSpeed(gyroY);
+                System.out.println(String.format("gyro/gyroNormalized: (%1f, %2f) / (%3f, %4f)", gyroX, gyroY, velX, velY));
+
 
                 /*System.out.println("Velocity x = " + velX);
                 System.out.println("Velocity y = " + velY);
