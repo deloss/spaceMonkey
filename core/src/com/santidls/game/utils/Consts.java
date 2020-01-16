@@ -9,7 +9,8 @@ public class Consts {
     public static final short ROCK_BIT = 2;
     public static final short STAR_BIT = 4;
     public static final short ROCK_DESTOYER_BORDER_BIT = 8;
-    public static final float TIME_CREATION_ROCK = 1f;
+    public static final float TIME_CREATION_ROCK = 0.5f;
     public static final float MAX_VELOCITY = 0.2f;
     public static final float LINEAR_VELOCITY_ROTATION_RELATION = 6;
+    public static final boolean SET_DEBUG_RENDERER = false;
 }

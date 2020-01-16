@@ -19,12 +19,14 @@
 package com.santidls.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -45,6 +47,7 @@ public class GameOverScreen extends BaseScreen {
 
     /** The buttons for retrying or for going back to menu. */
     private TextButton retry, menu;
+    private Label scoreLabel;
 
     public GameOverScreen(final SpaceMonkey game) {
         // Create a new stage, as usual.
@@ -55,6 +58,8 @@ public class GameOverScreen extends BaseScreen {
         // file.
         retry = new TextButton("Retry", new TextButton.TextButtonStyle(null, null, null, new BitmapFont()));
         menu = new TextButton("Menu", new TextButton.TextButtonStyle(null, null, null, new BitmapFont()));
+
+        scoreLabel = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE)); //Empty string because i set it later
 
         // Also, create an image. Images are actors that only display some texture. Useful if you
         // want to display a texture in a Scene2D based screen but you don't want to rewrite code.
@@ -87,11 +92,14 @@ public class GameOverScreen extends BaseScreen {
         menu.setSize(200, 80);
         retry.setPosition(60, 50);
         menu.setPosition(380, 50);
+        scoreLabel.setSize(200, 80);
+        scoreLabel.setPosition(220, 220);
 
         // Do not forget to add actors to the stage or we wouldn't see anything.
         stage.addActor(retry);
         //stage.addActor(gameover);
         stage.addActor(menu);
+        stage.addActor(scoreLabel);
     }
 
     @Override
@@ -124,5 +132,9 @@ public class GameOverScreen extends BaseScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+    }
+
+    public void setScoreLabel(int score) {
+        scoreLabel.setText(String.format("Your score is %02d!", score));
     }
 }

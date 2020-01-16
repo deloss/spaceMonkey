@@ -17,7 +17,7 @@ public class SpaceMonkey extends Game {
 	public SpriteBatch batch;
 	private AssetManager manager;
 
-	private BaseScreen gameOverScreen;
+	private GameOverScreen gameOverScreen;
 	public BaseScreen gameScreen, menuScreen, loadingScreen;
 	@Override
 	public void create() {
@@ -36,7 +36,8 @@ public class SpaceMonkey extends Game {
 		setScreen(loadingScreen);
 	}
 
-	public void gameOver() {
+	public void gameOver(int score) {
+		gameOverScreen.setScoreLabel(score);
 		setScreen(gameOverScreen);
 	}
 
