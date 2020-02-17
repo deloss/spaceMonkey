@@ -108,12 +108,26 @@ public class GameScreen extends BaseScreen {
         }
     }
 
+    static final float STEP_TIME = 1f/60f;
+    float accumulator = 0;
+
+    private void stepWorld(float delta) {
+
+        accumulator += Math.min(delta, 0.25f);
+
+        if (accumulator >= STEP_TIME) {
+            accumulator -= STEP_TIME;
+
+            world.step(STEP_TIME, 6, 2);
+        }
+    }
+
     @Override
     public void render(float delta) {
         update(delta);
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        world.step(delta,6,2);
+        stepWorld(delta);
         sb.setProjectionMatrix(gameCam.combined);
         sb.begin();
         sb.draw(backgroundTexture, 0, 0, Consts.GAME_WIDTH / Consts.PIXELES_POR_METRO, Consts.GAME_HEIGHT / Consts.PIXELES_POR_METRO);
@@ -127,7 +141,6 @@ public class GameScreen extends BaseScreen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-
     }
 
     public void upScore() {
